@@ -6,6 +6,10 @@ from skdh.gait_old import gait_endpoints
 
 
 class TestGait:
+    def test_deprecation_warning_names_replacement(self):
+        with pytest.warns(DeprecationWarning, match="GaitLumbar"):
+            Gait()
+
     def test(self, gait_input_50, gait_res_50):
         t, acc = gait_input_50
 

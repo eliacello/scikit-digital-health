@@ -40,7 +40,7 @@ class Gait(BaseProcess):
     data is provided, turns are detected, and steps during turns are noted.
 
     .. deprecated:: 0.13.0
-        `skdh.gait.Gait` has been superseded by `skdh.gaitv3.LumbarGait`
+        `skdh.gait_old.Gait` has been superseded by `skdh.gait.GaitLumbar`
 
     Parameters
     ----------
@@ -211,7 +211,7 @@ class Gait(BaseProcess):
         )
 
         warn(
-            "Deprecated in version 0.13.0. Use `skdh.gaitv3.LumbarGait` instead.",
+            "Deprecated in version 0.13.0. Use `skdh.gait.GaitLumbar` instead.",
             DeprecationWarning,
         )
 
@@ -469,7 +469,7 @@ class Gait(BaseProcess):
             **kwargs,
         )
         warn(
-            "Deprecated in version 0.13.0. Use `skdh.gaitv3.LumbarGait` instead.",
+            "Deprecated in version 0.13.0. Use `skdh.gait.GaitLumbar` instead.",
             DeprecationWarning,
         )
 
