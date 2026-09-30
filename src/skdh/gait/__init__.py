@@ -72,7 +72,6 @@ backwards compatability with the original gait module (now `gait_old`:
     g = GaitLumbar(
         downsample=True,  # match original always downsampling
         height_factor=0.53,
-        provide_leg_length=False,
         min_bout_time=8.0,
         max_bout_separation_time=0.5,
         gait_event_method='v cwt',  # match original IC/FC estimation
@@ -92,7 +91,8 @@ via another process:
 .. code-block:: python
 
     from skdh import Pipeline
-    from skdh.gait import GaitLumbar, PredictGaitLumbarLgbm
+    from skdh.gait import GaitLumbar
+    from skdh.context import PredictGaitLumbarLgbm
 
     p = Pipeline()
     p.add(PredictGaitLumbarLgbm())
@@ -139,6 +139,7 @@ result in values differing very small values):
 .. code-block :: python
 
     import skdh
+    from skdh.context import PredictGaitLumbarLgbm
 
     # gait_old.py
     g = skdh.gait_old.Gait(
@@ -160,29 +161,30 @@ result in values differing very small values):
 
     # gait_new.py
     g = skdh.gait.GaitLumbar(
-            downsample=True,
-            height_factor=0.53,
-            provide_leg_length=False,
-            min_bout_time=8.0,
-            max_bout_separation_time=0.5,
-            gait_event_method="v cwt",
-            correct_orientation=True,
-            filter_cutoff=20.0,
-            filter_order=4,
-            use_cwt_scale_relation=True,
-            wavelet_scale="default",
-            round_scale=True,
-            max_stride_time=2.25,
-            loading_factor=0.2,
-        )
+        downsample=True,
+        height_factor=0.53,
+        min_bout_time=8.0,
+        max_bout_separation_time=0.5,
+        gait_event_method="v cwt",
+        correct_orientation=True,
+        filter_cutoff=20.0,
+        filter_order=4,
+        use_cwt_scale_relation=True,
+        wavelet_scale="default",
+        round_scale=True,
+        max_stride_time=2.25,
+        loading_factor=0.2,
+    )
 
-        # NOTE that this gait module does not automatically predict gait bouts,
-        # and this is now a separate module (`skdh.context`).
-        cls = PredictGaitLumbarLgbm()
-        cls._in_pipeline = True
-        kw, bouts = cls.predict(time=t, accel=acc, fs=50.0)
+    # NOTE that this gait module does not automatically predict gait bouts,
+    # and this is now a separate module (`skdh.context`). Setting `_in_pipeline`
+    # makes `predict` return the (pipeline inputs, results) tuple used here.
+    cls = PredictGaitLumbarLgbm()
+    cls._in_pipeline = True
+    kw, bouts = cls.predict(time=t, accel=acc, fs=50.0)
 
-        res = g.predict(height=1.88, **kw)
+    # `prov_leg_length=True` equivalent: pass `leg_length=...` instead of `height`
+    res = g.predict(height=1.88, **kw)
 
 
 Adding Custom Gait Endpoints
